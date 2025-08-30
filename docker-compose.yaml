@@ -1,0 +1,23 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:15
+    container_name: user-db
+    restart: always
+    environment:
+      POSTGRES_DB: user
+      POSTGRES_USER: jey_user
+      POSTGRES_PASSWORD: "pass_p@22w@rd"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+    networks:
+      - user-network
+
+volumes:
+  pg_data:
+
+networks:
+  user-network:
