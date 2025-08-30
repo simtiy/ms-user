@@ -1,6 +1,11 @@
 package config
 
-import "os"
+import (
+	"fmt"
+	"github.com/joho/godotenv"
+	"log"
+	"os"
+)
 
 type Config struct {
 	DBHost     string
@@ -12,6 +17,16 @@ type Config struct {
 }
 
 func Load() *Config {
+	env := getEnv("APP_ENV", "prod")
+
+	projectRoot, _ := os.Getwd()
+	envFile := fmt.Sprintf("%s/profiles/%s.env", projectRoot, env)
+	log.Printf("Load envFile: %s", envFile)
+
+	if err := godotenv.Load(envFile); err != nil {
+		log.Fatalf("failed to load %s file: %v", envFile, err)
+	}
+
 	return &Config{
 		DBHost:     getEnv("DB_HOST", "localhost"),
 		DBPort:     getEnv("DB_PORT", "5432"),
